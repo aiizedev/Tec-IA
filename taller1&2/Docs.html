@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Documentación — Sistema Experto con Incertidumbre (Razas de Perros)</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#111a33;
+      --muted:#a9b3d0;
+      --text:#eef2ff;
+      --accent:#7c5cff;
+      --accent2:#23d5ab;
+      --border:rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(900px 400px at 10% 10%, rgba(124,92,255,.25), transparent 55%),
+        radial-gradient(900px 400px at 90% 20%, rgba(35,213,171,.18), transparent 55%),
+        radial-gradient(900px 500px at 60% 100%, rgba(124,92,255,.12), transparent 60%),
+        var(--bg);
+      line-height:1.55;
+    }
+    a{color:inherit}
+    header{
+      padding:48px 20px 20px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .hero{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:26px 26px 22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing:.2px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 0 6px rgba(124,92,255,.15);
+    }
+    h1{
+      margin:14px 0 8px;
+      font-size: 34px;
+      line-height:1.15;
+      letter-spacing:-.4px;
+    }
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      font-size: 15.5px;
+      max-width: 70ch;
+    }
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+    .pill{
+      font-size:12.5px;
+      color:var(--muted);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.035);
+      padding:7px 10px;
+      border-radius:999px;
+    }
+    .img-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:flex;
+      min-height: 260px;
+    }
+    .img-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter: saturate(1.05) contrast(1.02);
+    }
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      padding: 18px 20px 60px;
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap:18px;
+    }
+    nav{
+      position: sticky;
+      top: 16px;
+      align-self:start;
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding:14px;
+    }
+    nav h2{
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      margin: 2px 8px 10px;
+    }
+    nav a{
+      display:block;
+      padding:9px 10px;
+      border-radius: 12px;
+      text-decoration:none;
+      color: var(--text);
+      opacity:.9;
+    }
+    nav a:hover{
+      background: rgba(124,92,255,.12);
+      border: 1px solid rgba(124,92,255,.18);
+      padding:8px 9px;
+      opacity:1;
+    }
+    section{
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding:20px 20px 18px;
+      margin-bottom:14px;
+    }
+    section h2{
+      margin: 4px 0 10px;
+      font-size: 18.5px;
+      letter-spacing: -.2px;
+    }
+    section p, section li{
+      color: var(--muted);
+      margin: 8px 0;
+      font-size: 14.5px;
+    }
+    ul{padding-left: 18px; margin: 8px 0}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-top: 12px;
+    }
+    .card{
+      background: rgba(17,26,51,.55);
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding:14px 14px 12px;
+    }
+    .card h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    code, pre{
+      font-family: var(--mono);
+      font-size: 12.7px;
+      color: #d7dcff;
+    }
+    pre{
+      background: rgba(0,0,0,.28);
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      overflow:auto;
+      margin: 10px 0 0;
+    }
+    .callout{
+      border-left: 3px solid var(--accent2);
+      background: rgba(35,213,171,.06);
+      padding: 12px 12px 10px;
+      border-radius: 14px;
+      margin-top: 10px;
+    }
+    .footer{
+      max-width:1100px;
+      margin:0 auto;
+      padding: 0 20px 30px;
+      color: var(--muted);
+      font-size: 12.5px;
+      opacity:.9;
+    }
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      main{grid-template-columns:1fr}
+      nav{position:relative; top:auto}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="hero">
+      <div class="hero-card">
+        <span class="badge"><span class="dot"></span> Documentación del cuaderno (Jupyter Notebook)</span>
+        <h1>Sistema Experto con Incertidumbre<br/>para identificar razas de perros</h1>
+        <p class="subtitle">
+          Este cuaderno implementa un sistema experto basado en <b>reglas</b> y <b>Factores de Certeza (CF)</b>
+          para proponer un <b>ranking de razas</b> a partir de rasgos observables (a veces incompletos o dudosos).
+        </p>
+        <div class="meta">
+          <span class="pill">Motor: Forward Chaining</span>
+          <span class="pill">Incertidumbre: Certainty Factors (MYCIN-style)</span>
+          <span class="pill">Salida: Ranking + Logs explicables</span>
+          <span class="pill">Tests: Casos claros + ambiguos + conflicto</span>
+        </div>
+      </div>
+
+      <div class="img-card" aria-label="Imagen de portada">
+        <!-- Coloca malumabby.jpg en la misma carpeta que este HTML o ajusta la ruta (por ejemplo img/malumabby.jpg). -->
+        <img src="malumabby.jpg" alt="malumabby" />
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav>
+      <h2>Contenido</h2>
+      <a href="#resumen">Resumen</a>
+      <a href="#arquitectura">Arquitectura del sistema experto</a>
+      <a href="#representacion">Representación del conocimiento</a>
+      <a href="#motor">Motor de inferencia (Forward)</a>
+      <a href="#incertidumbre">Manejo de incertidumbre (CF)</a>
+      <a href="#explicacion">Módulo de explicación (logs)</a>
+      <a href="#uso">Uso del cuaderno</a>
+      <a href="#tests">Tests</a>
+      <a href="#extensiones">Extensiones recomendadas</a>
+    </nav>
+
+    <div>
+      <section id="resumen">
+        <h2>Resumen</h2>
+        <p>
+          El objetivo es identificar razas a partir de rasgos (hechos) como <code>tamano_grande</code>,
+          <code>orejas_paradas</code>, <code>pelo_largo</code>, <code>ojos_azules</code>, etc.
+          Cada hecho se acompaña de un valor de certeza entre 0 y 1 (por ejemplo: <code>orejas_paradas = 0.8</code>).
+        </p>
+        <div class="callout">
+          <p>
+            <b>Importante:</b> un CF no es una probabilidad. Es una medida de confianza
+            basada en evidencia y reglas, diseñada para combinar aportes y conflictos de forma estable.
+          </p>
+        </div>
+      </section>
+
+      <section id="arquitectura">
+        <h2>Arquitectura del sistema experto</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Base de conocimiento</h3>
+            <p>Conjunto de reglas del tipo <b>SI rasgos ENTONCES raza</b> con un peso (CF_regla).</p>
+          </div>
+          <div class="card">
+            <h3>Memoria de trabajo</h3>
+            <p>Hechos del caso actual: rasgos observados con incertidumbre (<code>Dict[str, float]</code>).</p>
+          </div>
+          <div class="card">
+            <h3>Motor de inferencia</h3>
+            <p>Encadenamiento hacia adelante: parte de hechos y dispara reglas para construir conclusiones.</p>
+          </div>
+          <div class="card">
+            <h3>Módulo de explicación</h3>
+            <p>Logs por raza: qué reglas aportaron, con qué CF, y cómo cambió el CF acumulado.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="representacion">
+        <h2>Representación del conocimiento</h2>
+        <p>
+          Las reglas se modelan como una clase (<code>Regla</code>) con condiciones, conclusión y factor de certeza:
+        </p>
+        <pre><code>Regla(
+  si=["tamano_grande", "pelo_largo", "ojos_azules", "orejas_paradas"],
+  entonces="Husky Siberiano",
+  fc=0.90,
+  id="R2"
+)</code></pre>
+        <p>
+          Los hechos se representan con un diccionario: <code>{"ojos_azules": 0.7, "orejas_paradas": 0.9, ...}</code>.
+        </p>
+      </section>
+
+      <section id="motor">
+        <h2>Motor de inferencia (Forward Chaining)</h2>
+        <p>
+          El motor es <b>forward</b> porque no parte de una hipótesis (“¿será Husky?”) para buscar evidencia,
+          sino que parte de evidencia (rasgos) y deriva conclusiones (razas).
+        </p>
+        <p>Flujo por regla:</p>
+        <ul>
+          <li><b>Validación:</b> la regla aplica si todos los hechos requeridos existen en la memoria de trabajo.</li>
+          <li><b>AND con incertidumbre:</b> <code>CF_antecedentes = min(CF(hecho_i))</code>.</li>
+          <li><b>Propagación:</b> <code>CF_aporte = CF_antecedentes × CF_regla</code>.</li>
+          <li><b>Acumulación:</b> si varias reglas concluyen la misma raza, sus aportes se combinan.</li>
+          <li><b>Ranking:</b> ordena razas por CF final descendente.</li>
+        </ul>
+      </section>
+
+      <section id="incertidumbre">
+        <h2>Manejo de incertidumbre (Certainty Factors)</h2>
+        <p>
+          Se usan CF para:
+          <b>(1)</b> hechos observados con duda (0–1) y <b>(2)</b> fiabilidad de reglas (típicamente -1 a 1).
+        </p>
+        <p>Regla con CF negativo = evidencia en contra:</p>
+        <pre><code>Regla(["pelo_rizado"], "Labrador Retriever", fc=-0.60, id="R10")</code></pre>
+        <p>
+          Para combinar múltiples aportes hacia una misma conclusión, se usa una función de combinación
+          estilo MYCIN (refuerzo, refutación o conflicto).
+        </p>
+      </section>
+
+      <section id="explicacion">
+        <h2>Módulo de explicación (logs)</h2>
+        <p>
+          Por cada raza, se guarda una lista de registros con la “traza”:
+        </p>
+        <pre><code>{
+  "regla": "R2",
+  "si": ["tamano_grande","pelo_largo","ojos_azules","orejas_paradas"],
+  "fc_antecedentes": 0.7,
+  "fc_regla": 0.9,
+  "fc_aporte": 0.63,
+  "cf_prev": 0.0,
+  "cf_nuevo": 0.63
+}</code></pre>
+        <p>
+          Esto permite responder preguntas de explicación:
+          <b>“¿Por qué salió Husky?”</b> → reglas disparadas y sus aportes.
+        </p>
+      </section>
+
+      <section id="uso">
+        <h2>Uso del cuaderno</h2>
+        <p>Pasos típicos:</p>
+        <ol>
+          <li>Definir el conjunto de rasgos (hechos posibles).</li>
+          <li>Construir la base de conocimiento (<code>REGLAS</code>).</li>
+          <li>Ingresar hechos del caso con su certeza (diccionario <code>hechos</code>).</li>
+          <li>Ejecutar <code>ranking, logs = inferir(hechos, REGLAS)</code>.</li>
+          <li>Mostrar top-N y revisar <code>logs</code> de la raza ganadora.</li>
+        </ol>
+        <pre><code>ranking, logs = inferir(hechos, REGLAS)
+for raza, cf in ranking[:5]:
+    print(raza, cf)
+# explicación
+mejor = ranking[0][0] if ranking else None
+if mejor:
+    for paso in logs[mejor]:
+        print(paso)</code></pre>
+      </section>
+
+      <section id="tests">
+        <h2>Tests</h2>
+        <p>
+          Se incluyen casos de prueba para validar:
+        </p>
+        <ul>
+          <li>Escenarios “claros” (rasgos muy característicos).</li>
+          <li>Escenarios “ambiguos” (rasgos compartidos entre razas).</li>
+          <li>Escenarios con conflicto (evidencia a favor y en contra para una misma raza).</li>
+          <li>Escenarios insuficientes (no disparan reglas).</li>
+        </ul>
+      </section>
+
+      <section id="extensiones">
+        <h2>Extensiones recomendadas</h2>
+        <ul>
+          <li><b>Preguntas interactivas:</b> construir un cuestionario que pida rasgos y certeza (0–1).</li>
+          <li><b>Umbrales/operadores:</b> condiciones tipo <code>peso &gt;= 25</code> o <code>altura &gt; 55</code>.</li>
+          <li><b>Rasgos numéricos con fuzzy:</b> convertir “altura/temperatura” a etiquetas con pertenencia.</li>
+          <li><b>Normalización de reglas:</b> evitar que reglas duplicadas “saturen” el CF si se itera.</li>
+          <li><b>Mejor explicación:</b> formato tipo “R2 aportó 0.63 porque min(...) = 0.7”.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <div class="footer">
+    <p>
+      Nota: Para que la imagen se vea, coloca <code>malumabby.jpg</code> en la misma carpeta que este HTML
+      (o ajusta <code>src</code> a la ruta correcta, por ejemplo <code>img/malumabby.jpg</code>).
+    </p>
+  </div>
+</body>
+</html>
