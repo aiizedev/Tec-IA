@@ -1,2 +1,2 @@
-# Taller3
-TallerRNA
+# Tecnicas de IA
+Tecnicas de IA
