@@ -1,0 +1,1 @@
+https://machinelearningmastery.com/a-gentle-introduction-to-graph-neural-networks-in-python/
